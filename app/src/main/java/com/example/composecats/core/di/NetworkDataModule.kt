@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Module
-@ApplicationScope
 interface NetworkDataModule {
 
     companion object {

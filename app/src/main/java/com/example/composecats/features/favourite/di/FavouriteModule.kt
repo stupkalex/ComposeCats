@@ -7,9 +7,9 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-@ApplicationScope
 interface FavouriteModule {
 
+    @ApplicationScope
     @Binds
     fun bindFavouriteRepository(impl: FavouriteRepositoryImpl): FavouriteRepository
 }

@@ -3,7 +3,6 @@ package com.example.composecats.features.cats_detail.di
 import dagger.Subcomponent
 
 @Subcomponent(modules = [DetailModule::class])
-@DetailScreenScope
 interface DetailComponent {
 
     /*fun inject(application: ComposeCatsApplication)

@@ -6,7 +6,6 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-@DetailScreenScope
 interface DetailModule {
 
    @Binds
