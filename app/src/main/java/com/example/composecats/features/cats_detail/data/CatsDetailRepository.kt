@@ -5,6 +5,6 @@ import com.example.composecats.core.network.NetworkResult
 
 interface CatsDetailRepository {
 
-    suspend fun getCatById(id: String) : NetworkResult<CatEntity>
+    suspend fun getCatById(id: String) : CatEntity
 
 }

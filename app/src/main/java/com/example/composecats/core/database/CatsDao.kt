@@ -13,7 +13,7 @@ interface CatsDao {
     suspend fun getAllFavouriteCats() : List<CatEntity>
 
     @Query("SELECT * FROM cats_table WHERE id = :id LIMIT 1")
-    suspend fun getCatsById(id: String) : CatEntity?
+    suspend fun getCatsById(id: String) : CatEntity
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCat(cat: CatEntity)

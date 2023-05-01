@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetCatByIdUseCase @Inject constructor(private val repository: CatsDetailRepository) {
 
-    suspend operator fun invoke(id: String): NetworkResult<CatEntity> {
+    suspend operator fun invoke(id: String): CatEntity {
         return repository.getCatById(id)
     }
 
