@@ -8,6 +8,7 @@ import com.example.composecats.core.entity.CatEntity
 import com.example.composecats.core.network.NetworkResult.*
 import com.example.composecats.core.network.dto.toEntity
 import com.example.composecats.core.network.retrofit.ApiService
+import com.example.composecats.features.favourite.domain.usecases.UpdateCatStateUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -17,9 +18,10 @@ import javax.inject.Inject
 private const val TAG = "FeedRepository"
 private const val BATCH_LIMIT = 25
 
-class FeedPresenterImpl @Inject constructor(
-    val apiService: ApiService,
-    val database: CatsDao
+class FeedRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
+    private val database: CatsDao,
+    private val updateCatState: UpdateCatStateUseCase
 ) : FeedRepository {
 
     private val ioCoroutineScope = CoroutineScope(Dispatchers.IO)
@@ -30,12 +32,28 @@ class FeedPresenterImpl @Inject constructor(
 
     private var page = 0
 
-    val getCatsFlow = MutableStateFlow(
+    private val getCatsFlow = MutableStateFlow(
         Patch(UpdateDataSet, emptyList())
     )
 
     init {
         initCache(database)
+        observeUpdateCat()
+    }
+
+    private fun observeUpdateCat() {
+        ioCoroutineScope.launch {
+            updateCatState
+                .invoke()
+                .collect {
+                    catsHotCache[it.id] = it
+                    val patch = Patch(
+                        NotifyItemChanged,
+                        listOf(it)
+                    )
+                    getCatsFlow.emit(patch)
+                }
+        }
     }
 
     private fun initCache(database: CatsDao) {
@@ -87,7 +105,7 @@ class FeedPresenterImpl @Inject constructor(
         }.collect { result ->
             when (result) {
                 is Success -> {
-                    val catsEntities = result.data?.map{
+                    val catsEntities = result.data?.map {
                         it.toEntity()
                     }?.filter {
                         catsHotCache[it.id] == null
