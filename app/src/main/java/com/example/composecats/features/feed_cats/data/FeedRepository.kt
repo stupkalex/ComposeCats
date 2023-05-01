@@ -1,11 +1,17 @@
 package com.example.composecats.features.feed_cats.data
 
+import com.example.composecats.core.Patch
 import com.example.composecats.core.entity.CatEntity
+import kotlinx.coroutines.flow.Flow
 
 interface FeedRepository {
 
-    suspend fun getCats(): List<CatEntity>
+    suspend fun getCats(): Flow<out Patch>
 
-    suspend fun getFavouriteCats(): List<CatEntity>
+    suspend fun showFavoriteCats()
+
+    suspend fun showAllCats()
+
+    suspend fun loadMore()
 
 }
