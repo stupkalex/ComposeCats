@@ -41,10 +41,15 @@ private fun NewsFeedScreenContent(
 ) {
 
     val posts = viewModel.catsList.collectAsState()
+    val nextDataIsLoading = viewModel.nextDataIsLoading.collectAsState()
+    val showFavourite = viewModel.showFavourite.collectAsState()
+
     FeedCats(
         viewModel = viewModel,
         posts.value,
-        navigationState
+        navigationState,
+        nextDataIsLoading.value,
+        showFavourite.value
     )
 }
 
@@ -53,7 +58,9 @@ private fun NewsFeedScreenContent(
 fun FeedCats(
     viewModel: FeedViewModel,
     posts: List<CatEntity>,
-    navigationState: NavigationState
+    navigationState: NavigationState,
+    nextDataIsLoading: Boolean,
+    showFavourite: Boolean
 ) {
     Scaffold(
         topBar = {
@@ -69,38 +76,57 @@ fun FeedCats(
                     SelectCatsMenu(viewModel = viewModel)
                 }
             )
-        },
-        content = {
-            LazyColumn(
-                modifier = Modifier
-                    .background(MaterialTheme.colors.background),
-                contentPadding = PaddingValues(
-                    top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(items = posts, key = { it.id }) { feedPost ->
+        }
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background),
+            contentPadding = PaddingValues(
+                top = 16.dp, start = 8.dp, end = 8.dp, bottom = 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(items = posts, key = { it.id }) { feedPost ->
 
-                    val iconResId =
-                        if (feedPost.isFavourite) R.drawable.ic_like_set else R.drawable.ic_like
-                    val tint =
-                        if (feedPost.isFavourite) DarkRed else MaterialTheme.colors.onSecondary
+                val iconResId =
+                    if (feedPost.isFavourite) R.drawable.ic_like_set else R.drawable.ic_like
+                val tint =
+                    if (feedPost.isFavourite) DarkRed else MaterialTheme.colors.onSecondary
 
-                    CatCard(
-                        catModel = feedPost,
-                        favouriteClickListener = {
-                            viewModel.favouriteClick(feedPost)
-                        },
-                        detailClickListener = { _ ->
-                            navigationState.navigateToDetail(feedPost.id)
-                        },
-                        iconResId,
-                        tint
-                    )
+                CatCard(
+                    catModel = feedPost,
+                    favouriteClickListener = {
+                        viewModel.favouriteClick(feedPost)
+                    },
+                    detailClickListener = { _ ->
+                        navigationState.navigateToDetail(feedPost.id)
+                    },
+                    iconResId,
+                    tint,
+                    viewModel
+                )
+            }
+            if (!showFavourite) {
+                item {
+                    if (nextDataIsLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator(color = DarkRed)
+                        }
+                    } else {
+                        SideEffect {
+                            viewModel.loadMore()
+                        }
+                    }
                 }
             }
         }
-    )
+    }
 }
 
 @Composable

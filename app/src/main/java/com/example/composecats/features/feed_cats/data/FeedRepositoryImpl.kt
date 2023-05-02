@@ -97,6 +97,7 @@ class FeedRepositoryImpl @Inject constructor(
         val response = apiService.getCatsBatch(BATCH_LIMIT, page)
 
         val result = if (response.isSuccessful) {
+            page++
             Success(response.body())
         } else {
             Error(response.message())
@@ -127,7 +128,8 @@ class FeedRepositoryImpl @Inject constructor(
                 Log.d(TAG, result.messageText)
                 val patch = Patch(
                     ErrorRequest,
-                    emptyList()
+                    emptyList(),
+                    true
                 )
                 getCatsFlow.emit(patch)
             }

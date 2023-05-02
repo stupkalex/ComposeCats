@@ -8,11 +8,17 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.VectorPainter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.R
 
 @Composable
 fun CatCard(
@@ -20,7 +26,8 @@ fun CatCard(
     favouriteClickListener: (CatEntity) -> Unit,
     detailClickListener: (String) -> Unit,
     iconResId: Int,
-    tint: Color
+    tint: Color,
+    viewModel: FeedViewModel
 ) {
     Card(
         backgroundColor = MaterialTheme.colors.background,
@@ -28,6 +35,7 @@ fun CatCard(
         elevation = 3.dp
     ) {
         Column() {
+            val placeholder = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground)
             AsyncImage(
                 model = catModel.networkUrl,
                 modifier = Modifier
@@ -38,6 +46,7 @@ fun CatCard(
                     },
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
+                placeholder = rememberVectorPainter(image = placeholder)
             )
             Icon(
                 modifier = Modifier
