@@ -1,14 +1,13 @@
 package com.example.composecats.core.network.dto
 
 import com.example.composecats.core.entity.CatEntity
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
+
 data class CatDTO(
-    @SerialName("id")
+    @SerializedName("id")
     val id: String,
-    @SerialName("url")
+    @SerializedName("url")
     val url: String
 )
 

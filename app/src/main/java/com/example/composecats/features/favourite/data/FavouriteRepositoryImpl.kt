@@ -1,5 +1,6 @@
 package com.example.composecats.features.favourite.data
 
+import android.util.Log
 import com.example.composecats.core.database.CatsDao
 import com.example.composecats.core.entity.CatEntity
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ class FavouriteRepositoryImpl @Inject constructor(
     private val database: CatsDao
 ) : FavouriteRepository {
 
-    private val updateCatState = MutableSharedFlow<CatEntity>()
+    private val updateCatState = MutableSharedFlow<CatEntity>(replay = 1)
 
     override suspend fun addCatToFavourite(cat: CatEntity) {
         val updateCat = cat.copy(isFavourite = true)

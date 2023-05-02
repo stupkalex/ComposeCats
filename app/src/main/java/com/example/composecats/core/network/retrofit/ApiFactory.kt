@@ -1,7 +1,5 @@
 package com.example.composecats.core.network.retrofit
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -9,6 +7,8 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import tech.thdev.network.flowcalladapterfactory.FlowCallAdapterFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
@@ -42,10 +42,9 @@ class ApiFactory @Inject constructor (listener: OnConnectionTimeoutListener) {
         .addInterceptor(interceptor)
         .build()
 
-    val contentType = "application/json".toMediaType()
-
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory(contentType))
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(FlowCallAdapterFactory())
         .client(okHTTP)
         .baseUrl(BASE_URL)
         .build()

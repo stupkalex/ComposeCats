@@ -1,19 +1,19 @@
 package com.example.composecats.features.cats_detail.di
 
+import com.example.composecats.core.di.ViewModelFactory
+import dagger.BindsInstance
 import dagger.Subcomponent
 
-@Subcomponent(modules = [DetailModule::class])
+@Subcomponent(modules = [DetailModule::class, DetailViewModelModule::class])
 interface DetailComponent {
 
-    /*fun inject(application: ComposeCatsApplication)
+    fun getViewModelFactory(): ViewModelFactory
 
-    @Component.Factory
+    @Subcomponent.Factory
     interface Factory {
 
         fun create(
-            @BindsInstance application: Application,
-        ): ApplicationComponent
-
-    }*/
-
+            @BindsInstance catId: String
+        ): DetailComponent
+    }
 }

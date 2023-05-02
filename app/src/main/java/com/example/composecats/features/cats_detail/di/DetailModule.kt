@@ -9,7 +9,6 @@ import dagger.Module
 interface DetailModule {
 
    @Binds
-   @DetailScreenScope
    fun bindDetailRepository(impl: CatsDetailRepositoryImpl): CatsDetailRepository
 
 }

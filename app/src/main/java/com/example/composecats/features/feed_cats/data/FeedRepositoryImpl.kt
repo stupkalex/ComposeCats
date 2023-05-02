@@ -48,8 +48,8 @@ class FeedRepositoryImpl @Inject constructor(
                 .collect {
                     catsHotCache[it.id] = it
                     val patch = Patch(
-                        NotifyItemChanged,
-                        listOf(it)
+                        UpdateDataSet,
+                        catsHotCache.values.toList()
                     )
                     getCatsFlow.emit(patch)
                 }
@@ -95,44 +95,43 @@ class FeedRepositoryImpl @Inject constructor(
 
     override suspend fun loadMore() {
         val response = apiService.getCatsBatch(BATCH_LIMIT, page)
-        response.map { result ->
-            val testResult = if (result.isSuccessful) {
-                Success(result.body())
-            } else {
-                Error(result.message())
-            }
-            testResult
-        }.collect { result ->
-            when (result) {
-                is Success -> {
-                    val catsEntities = result.data?.map {
-                        it.toEntity()
-                    }?.filter {
-                        catsHotCache[it.id] == null
-                    }
 
-                    catsEntities?.let {
-                        database.addCats(catsEntities)
-                        catsHotCache.putAll(catsEntities.map {
-                            it.id to it
-                        })
-                        val patch = Patch(
-                            UpdateDataSet,
-                            catsEntities
-                        )
-                        getCatsFlow.emit(patch)
-                    }
+        val result = if (response.isSuccessful) {
+            Success(response.body())
+        } else {
+            Error(response.message())
+        }
 
+        when (result) {
+            is Success -> {
+                val catsEntities = result.data?.map {
+                    it.toEntity()
+                }?.filter {
+                    !catsHotCache.containsKey(it.id)
                 }
-                is Error -> {
-                    Log.d(TAG, result.messageText)
+
+                catsEntities?.let {
+                    database.addCats(catsEntities)
+                    catsHotCache.putAll(catsEntities.map {
+                        it.id to it
+                    })
                     val patch = Patch(
-                        ErrorRequest,
-                        emptyList()
+                        UpdateDataSet,
+                        catsEntities
                     )
                     getCatsFlow.emit(patch)
                 }
+
+            }
+            is Error -> {
+                Log.d(TAG, result.messageText)
+                val patch = Patch(
+                    ErrorRequest,
+                    emptyList()
+                )
+                getCatsFlow.emit(patch)
             }
         }
+
     }
 }

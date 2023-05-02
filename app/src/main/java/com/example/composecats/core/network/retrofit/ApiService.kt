@@ -12,6 +12,6 @@ interface ApiService {
     suspend fun getCatsBatch(
         @Query("limit") limit: Int,
         @Query("page") page: Int
-    ): Flow<Response<List<CatDTO>>>
+    ): Response<List<CatDTO>>
 
 }

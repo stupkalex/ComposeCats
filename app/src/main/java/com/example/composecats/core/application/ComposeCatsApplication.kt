@@ -1,17 +1,19 @@
 package com.example.composecats.core.application
 
+import ApplicationComponent
 import android.app.Application
-import com.stupkalex.rostok.di.DaggerApplicationComponent
-
+import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 class ComposeCatsApplication: Application() {
 
-    val component by lazy {
+    val component: ApplicationComponent by lazy {
         DaggerApplicationComponent.factory().create(this)
     }
 
-    override fun onCreate() {
-        component.inject(this)
-        super.onCreate()
-    }
+}
 
+@Composable
+fun getApplicationComponent(): ApplicationComponent {
+    return (LocalContext.current.applicationContext as ComposeCatsApplication).component
 }

@@ -1,4 +1,4 @@
-package com.stupkalex.rostok.di
+package com.example.composecats.core.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
