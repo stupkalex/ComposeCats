@@ -88,6 +88,7 @@ class FeedViewModel @Inject constructor(
 
     fun loadMore() {
         viewModelScope.launch {
+            nextDataIsLoading.emit(true)
             loadMoreUseCase.invoke()
         }
     }

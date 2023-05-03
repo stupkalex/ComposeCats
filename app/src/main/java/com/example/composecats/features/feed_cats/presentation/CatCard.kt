@@ -1,5 +1,6 @@
 package com.example.composecats.features.feed_cats.presentation
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -38,20 +39,25 @@ fun CatCard(
         Column() {
             val placeholder = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground)
             val url = if (catModel.isDownload) catModel.localUrl else catModel.networkUrl
+            var readyOpenDetail = catModel.isDownload
             AsyncImage(
                 model = url,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(catModel.ratio,true )
                     .clickable {
-                        detailClickListener(catModel.id)
+                        if (readyOpenDetail) {
+                            detailClickListener(catModel.id)
+                        }
                     },
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
                 placeholder = rememberVectorPainter(image = placeholder),
                 onSuccess = {
-                    if(!catModel.isDownload)
-                    viewModel.saveToCache(it.result.drawable, catModel)
+                    if (!catModel.isDownload){
+                        viewModel.saveToCache(it.result.drawable, catModel)
+                        readyOpenDetail = true
+                    }
                 }
             )
             Icon(
