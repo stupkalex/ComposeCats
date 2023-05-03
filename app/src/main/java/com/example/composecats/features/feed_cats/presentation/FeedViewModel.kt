@@ -45,18 +45,20 @@ class FeedViewModel @Inject constructor(
         viewModelScope.launch {
             getCatsUseCase.invoke()
                 .collect { patch ->
-                    if (!patch.content.isNullOrEmpty()) {
                         when (patch.type) {
                             UpdateDataSet -> {
-                                catsList.emit(patch.content.toMutableList())
+                                if (!patch.content.isNullOrEmpty()) {
+                                    catsList.emit(patch.content.toMutableList())
+                                }
                             }
                             LoadMore -> {
+                                if (!patch.content.isNullOrEmpty()) {
                                 catsList.emit(patch.content)
                                 nextDataIsLoading.emit(true)
+                                }
                             }
                             ErrorRequest -> {}
                         }
-                    }
                 }
         }
 

@@ -77,13 +77,14 @@ class FeedRepositoryImpl @Inject constructor(
     }
 
     override suspend fun showFavoriteCats() {
-        notNetworkPaging = true
-        val favouriteCats = database.getAllFavouriteCats()
-        val patch = Patch(
-            UpdateDataSet,
-            favouriteCats.sortedBy { it.date }
-        )
-        getCatsFlow.emit(patch)
+            notNetworkPaging = true
+            val favouriteCats = database.getAllFavouriteCats()
+            val type = if (favouriteCats.isNotEmpty()) UpdateDataSet else ErrorRequest
+            val patch = Patch(
+                type,
+                favouriteCats.sortedBy { it.date }
+            )
+            getCatsFlow.emit(patch)
     }
 
     override suspend fun showAllCats() {
