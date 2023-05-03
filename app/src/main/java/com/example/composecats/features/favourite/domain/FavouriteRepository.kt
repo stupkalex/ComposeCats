@@ -1,4 +1,4 @@
-package com.example.composecats.features.favourite.data
+package com.example.composecats.features.favourite.domain
 
 import com.example.composecats.core.entity.CatEntity
 import kotlinx.coroutines.flow.Flow

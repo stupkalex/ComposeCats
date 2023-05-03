@@ -2,6 +2,7 @@ package com.example.composecats.features.cats_detail.data
 
 import com.example.composecats.core.database.CatsDao
 import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.features.cats_detail.domain.CatsDetailRepository
 import javax.inject.Inject
 
 class CatsDetailRepositoryImpl @Inject constructor(

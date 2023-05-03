@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -92,16 +93,33 @@ fun CatDetailCard(
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
         )
-        Icon(
-            modifier = Modifier
-                .size(40.dp)
-                .padding(8.dp)
-                .clickable {
-                    viewModel.favouriteClick(catModel)
-                },
-            painter = painterResource(id = iconResId),
-            contentDescription = null,
-            tint = tint
-        )
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(8.dp)
+                    .clickable {
+                        viewModel.favouriteClick(catModel)
+                    },
+                painter = painterResource(id = iconResId),
+                contentDescription = null,
+                tint = tint
+            )
+            Icon(
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(8.dp)
+                    .clickable {
+                        viewModel.download(catModel)
+                    },
+                painter = painterResource(id = R.drawable.file_download_black_24dp),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onSecondary
+            )
+        }
+
     }
 }

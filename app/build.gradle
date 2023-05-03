@@ -93,4 +93,7 @@ dependencies {
     //Coil
     implementation("io.coil-kt:coil-compose:2.3.0")
 
+    //Dexter
+    implementation 'com.karumi:dexter:6.2.2'
+
 }

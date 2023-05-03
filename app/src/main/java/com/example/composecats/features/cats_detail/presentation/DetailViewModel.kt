@@ -6,6 +6,7 @@ import com.example.composecats.core.entity.CatEntity
 import com.example.composecats.features.cats_detail.domain.usercases.GetCatByIdUseCase
 import com.example.composecats.features.favourite.domain.usecases.AddCatToFavouriteUseCase
 import com.example.composecats.features.favourite.domain.usecases.DeleteCatToFavouriteUseCase
+import com.example.composecats.features.save_images.domain.usecases.SaveImageToDownloadsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,6 +15,7 @@ class DetailViewModel @Inject constructor(
     private val getCatByIdUseCase: GetCatByIdUseCase,
     private val addFavouriteCatsUseCase: AddCatToFavouriteUseCase,
     private val deleteCatToFavouriteUseCase: DeleteCatToFavouriteUseCase,
+    private val saveImageToDownloadsUseCase: SaveImageToDownloadsUseCase,
     private val catId: String
 ): ViewModel() {
 
@@ -42,5 +44,9 @@ class DetailViewModel @Inject constructor(
             }
 
         }
+    }
+
+    fun download(cat: CatEntity) {
+        saveImageToDownloadsUseCase.invoke(cat)
     }
 }

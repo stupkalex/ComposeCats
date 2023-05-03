@@ -9,12 +9,20 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "cats_table")
 data class CatEntity(
     @PrimaryKey
+    @ColumnInfo(name = "id")
     val id: String,
+    @ColumnInfo(name = "network_url")
     val networkUrl: String,
+    @ColumnInfo(name = "local_url")
     val localUrl: String? = null,
+    @ColumnInfo(name = "is_download")
     val isDownload: Boolean = false,
     @ColumnInfo(name = "is_favourite")
-    val isFavourite: Boolean = false
+    val isFavourite: Boolean = false,
+    @ColumnInfo(name = "ratio")
+    val ratio: Float,
+    @ColumnInfo(name = "date")
+    val date: Long
 ) {
     companion object {
         val NavigationType: NavType<String> = object : NavType<String>(false) {

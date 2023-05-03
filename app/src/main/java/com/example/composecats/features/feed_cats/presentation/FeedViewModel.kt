@@ -1,9 +1,8 @@
 package com.example.composecats.features.feed_cats.presentation
 
-import android.util.Log
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composecats.core.Patch
 import com.example.composecats.core.PatchType.*
 import com.example.composecats.core.entity.CatEntity
 import com.example.composecats.features.favourite.domain.usecases.AddCatToFavouriteUseCase
@@ -12,13 +11,10 @@ import com.example.composecats.features.feed_cats.domain.usecases.GetCatsUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.LoadMoreUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.ShowAllCatsUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.ShowFavouriteCatsUseCase
-import kotlinx.coroutines.flow.Flow
+import com.example.composecats.features.save_images.domain.usecases.SaveImageToCacheUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-private const val PAGING_OFFSET = 2
 
 class FeedViewModel @Inject constructor(
     private val getCatsUseCase: GetCatsUseCase,
@@ -26,13 +22,11 @@ class FeedViewModel @Inject constructor(
     private val showFavouriteCatsUseCase: ShowFavouriteCatsUseCase,
     private val addFavouriteCatsUseCase: AddCatToFavouriteUseCase,
     private val deleteCatToFavouriteUseCase: DeleteCatToFavouriteUseCase,
-    private val loadMoreUseCase: LoadMoreUseCase
+    private val loadMoreUseCase: LoadMoreUseCase,
+    private val saveImageToCacheUseCase: SaveImageToCacheUseCase
 ) : ViewModel() {
 
     var catsList: MutableStateFlow<List<CatEntity>>
-
-    private var listSize = 0
-    private var uploadImageCount = 0
 
     init {
         catsList = MutableStateFlow(emptyList())
@@ -43,6 +37,9 @@ class FeedViewModel @Inject constructor(
     var showFavourite = MutableStateFlow(false)
 
 
+    fun saveToCache(drawable: Drawable,cat: CatEntity) {
+       saveImageToCacheUseCase.invoke(drawable, cat)
+    }
 
     private fun getCatsList() {
         viewModelScope.launch {
@@ -52,11 +49,9 @@ class FeedViewModel @Inject constructor(
                         when (patch.type) {
                             UpdateDataSet -> {
                                 catsList.emit(patch.content.toMutableList())
-                                listSize = patch.content.size
                             }
                             LoadMore -> {
                                 catsList.emit(patch.content)
-                                listSize = patch.content.size
                                 nextDataIsLoading.emit(true)
                             }
                             ErrorRequest -> {}

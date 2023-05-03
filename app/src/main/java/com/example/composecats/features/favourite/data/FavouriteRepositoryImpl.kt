@@ -1,8 +1,8 @@
 package com.example.composecats.features.favourite.data
 
-import android.util.Log
 import com.example.composecats.core.database.CatsDao
 import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.features.favourite.domain.FavouriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject

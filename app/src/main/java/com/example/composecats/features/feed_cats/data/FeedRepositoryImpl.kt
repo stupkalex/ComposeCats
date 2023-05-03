@@ -9,6 +9,7 @@ import com.example.composecats.core.network.NetworkResult.*
 import com.example.composecats.core.network.dto.toEntity
 import com.example.composecats.core.network.retrofit.ApiService
 import com.example.composecats.features.favourite.domain.usecases.UpdateCatStateUseCase
+import com.example.composecats.features.feed_cats.domain.FeedRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -26,7 +27,7 @@ class FeedRepositoryImpl @Inject constructor(
 
     private val ioCoroutineScope = CoroutineScope(Dispatchers.IO)
 
-    private val catsHotCache = HashMap<String, CatEntity>()
+    private val catsHotCache = FeedHotCache()
 
     private var notNetworkPaging = false
 
@@ -46,10 +47,10 @@ class FeedRepositoryImpl @Inject constructor(
             updateCatState
                 .invoke()
                 .collect {
-                    catsHotCache[it.id] = it
+                    catsHotCache.updateCache(it)
                     val patch = Patch(
                         UpdateDataSet,
-                        catsHotCache.values.toList()
+                        catsHotCache.getValue()
                     )
                     getCatsFlow.emit(patch)
                 }
@@ -58,13 +59,10 @@ class FeedRepositoryImpl @Inject constructor(
 
     private fun initCache(database: CatsDao) {
         ioCoroutineScope.launch {
-            val cashCats = database.getAllCats().map {
-                it.id to it
-            }
-            catsHotCache.putAll(cashCats)
+            catsHotCache.updateCache(database.getAllCats())
             val patch = Patch(
                 UpdateDataSet,
-                catsHotCache.values.toList()
+                catsHotCache.getValue()
             )
             getCatsFlow.emit(patch)
         }
@@ -79,7 +77,7 @@ class FeedRepositoryImpl @Inject constructor(
         val favouriteCats = database.getAllFavouriteCats()
         val patch = Patch(
             UpdateDataSet,
-            favouriteCats
+            favouriteCats.sortedBy { it.date }
         )
         getCatsFlow.emit(patch)
     }
@@ -88,7 +86,7 @@ class FeedRepositoryImpl @Inject constructor(
         notNetworkPaging = false
         val patch = Patch(
             UpdateDataSet,
-            catsHotCache.values.toList()
+            catsHotCache.getValue()
         )
         getCatsFlow.emit(patch)
     }
@@ -108,17 +106,15 @@ class FeedRepositoryImpl @Inject constructor(
                 val catsEntities = result.data?.map {
                     it.toEntity()
                 }?.filter {
-                    !catsHotCache.containsKey(it.id)
+                    !catsHotCache.contains(it.id)
                 }
 
                 catsEntities?.let {
                     database.addCats(catsEntities)
-                    catsHotCache.putAll(catsEntities.map {
-                        it.id to it
-                    })
+                    catsHotCache.updateCache(it)
                     val patch = Patch(
                         UpdateDataSet,
-                        catsEntities
+                        catsHotCache.getValue()
                     )
                     getCatsFlow.emit(patch)
                 }
@@ -136,4 +132,24 @@ class FeedRepositoryImpl @Inject constructor(
         }
 
     }
+}
+
+class FeedHotCache() {
+    private val cache: HashMap<String, CatEntity> = HashMap<String, CatEntity>()
+
+    fun getValue() = cache.values.sortedBy { it.date }
+
+    fun updateCache(list: List<CatEntity>) {
+        cache.putAll(
+            list.map {
+                it.id to it
+            }
+        )
+    }
+
+    fun updateCache(item: CatEntity) {
+        cache[item.id] = item
+    }
+
+    fun contains(id: String): Boolean = cache.containsKey(id)
 }

@@ -1,4 +1,4 @@
-package com.example.composecats.features.feed_cats.data
+package com.example.composecats.features.feed_cats.domain
 
 import com.example.composecats.core.Patch
 import com.example.composecats.core.entity.CatEntity
