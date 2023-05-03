@@ -8,6 +8,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -39,14 +42,16 @@ fun CatCard(
         Column() {
             val placeholder = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground)
             val url = if (catModel.isDownload) catModel.localUrl else catModel.networkUrl
-            var readyOpenDetail = catModel.isDownload
+            var readyOpenDetail = remember {
+                mutableStateOf(catModel.isDownload)
+            }
             AsyncImage(
                 model = url,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(catModel.ratio,true )
                     .clickable {
-                        if (readyOpenDetail) {
+                        if (readyOpenDetail.value) {
                             detailClickListener(catModel.id)
                         }
                     },
@@ -56,7 +61,7 @@ fun CatCard(
                 onSuccess = {
                     if (!catModel.isDownload){
                         viewModel.saveToCache(it.result.drawable, catModel)
-                        readyOpenDetail = true
+                        readyOpenDetail.value = true
                     }
                 }
             )
