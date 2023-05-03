@@ -28,14 +28,18 @@ class FeedViewModel @Inject constructor(
 
     var catsList: MutableStateFlow<List<CatEntity>>
 
+    val showFavourite by lazy {
+        MutableStateFlow(false)
+    }
+
+    val nextDataIsLoading by lazy {
+        MutableStateFlow(false)
+    }
+
     init {
         catsList = MutableStateFlow(emptyList())
         getCatsList()
     }
-
-    var nextDataIsLoading = MutableStateFlow(false)
-    var showFavourite = MutableStateFlow(false)
-
 
     fun saveToCache(drawable: Drawable,cat: CatEntity) {
        saveImageToCacheUseCase.invoke(drawable, cat)
@@ -50,11 +54,12 @@ class FeedViewModel @Inject constructor(
                                 if (!patch.content.isNullOrEmpty()) {
                                     catsList.emit(patch.content.toMutableList())
                                 }
+                                nextDataIsLoading.emit(false)
                             }
                             LoadMore -> {
                                 if (!patch.content.isNullOrEmpty()) {
                                 catsList.emit(patch.content)
-                                nextDataIsLoading.emit(true)
+                                nextDataIsLoading.emit(false)
                                 }
                             }
                             ErrorRequest -> {}
