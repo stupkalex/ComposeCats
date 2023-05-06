@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.composecats.R
 import com.example.composecats.core.application.getApplicationComponent
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.core.navigation.NavigationState
 import com.example.composecats.core.navigation.rememberNavigationState
 import com.example.composecats.ui.theme.DarkRed

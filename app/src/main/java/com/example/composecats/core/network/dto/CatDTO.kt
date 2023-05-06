@@ -1,7 +1,7 @@
 package com.example.composecats.core.network.dto
 
 import android.util.Log
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 import java.util.Calendar

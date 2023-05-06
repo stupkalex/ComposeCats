@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.R
 
 @Composable

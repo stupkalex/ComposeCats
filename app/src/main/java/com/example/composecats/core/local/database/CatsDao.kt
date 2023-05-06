@@ -1,7 +1,7 @@
-package com.example.composecats.core.database
+package com.example.composecats.core.local.database
 
 import androidx.room.*
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 
 @Dao
 interface CatsDao {

@@ -1,4 +1,4 @@
-package com.example.composecats.features.save_images.data
+package com.example.composecats.core.image_cache.data
 
 import android.Manifest
 import android.content.Context
@@ -8,10 +8,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Environment
 import android.widget.Toast
-import com.example.composecats.core.database.CatsDao
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.database.CatsDao
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.core.utils.permissionManager
-import com.example.composecats.features.save_images.domain.ImageRepository
+import com.example.composecats.core.image_cache.domain.ImageRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

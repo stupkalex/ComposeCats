@@ -1,4 +1,4 @@
-package com.example.composecats.core.entity
+package com.example.composecats.core.local.entity
 
 import android.os.Bundle
 import androidx.navigation.NavType

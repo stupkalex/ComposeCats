@@ -1,7 +1,7 @@
-package com.example.composecats.features.save_images.domain
+package com.example.composecats.core.image_cache.domain
 
 import android.graphics.drawable.Drawable
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 
 interface ImageRepository {
 

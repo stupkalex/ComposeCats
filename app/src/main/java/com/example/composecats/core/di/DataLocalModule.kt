@@ -1,10 +1,10 @@
 package com.example.composecats.core.di
 
 import android.content.Context
-import com.example.composecats.core.database.AppDatabase
-import com.example.composecats.core.database.CatsDao
-import com.example.composecats.features.save_images.domain.ImageRepository
-import com.example.composecats.features.save_images.data.ImageRepositoryImpl
+import com.example.composecats.core.local.database.AppDatabase
+import com.example.composecats.core.local.database.CatsDao
+import com.example.composecats.core.image_cache.domain.ImageRepository
+import com.example.composecats.core.image_cache.data.ImageRepositoryImpl
 import dagger.Module
 import dagger.Provides
 

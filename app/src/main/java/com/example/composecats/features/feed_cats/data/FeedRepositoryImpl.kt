@@ -5,8 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import com.example.composecats.core.Patch
 import com.example.composecats.core.PatchType.*
-import com.example.composecats.core.database.CatsDao
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.database.CatsDao
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.core.network.NetworkResult.*
 import com.example.composecats.core.network.dto.toEntity
 import com.example.composecats.core.network.retrofit.ApiService

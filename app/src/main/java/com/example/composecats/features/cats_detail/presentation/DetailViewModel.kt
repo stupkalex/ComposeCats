@@ -2,11 +2,11 @@ package com.example.composecats.features.cats_detail.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.features.cats_detail.domain.usercases.GetCatByIdUseCase
 import com.example.composecats.features.favourite.domain.usecases.AddCatToFavouriteUseCase
 import com.example.composecats.features.favourite.domain.usecases.DeleteCatToFavouriteUseCase
-import com.example.composecats.features.save_images.domain.usecases.SaveImageToDownloadsUseCase
+import com.example.composecats.core.image_cache.domain.usecases.SaveImageToDownloadsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

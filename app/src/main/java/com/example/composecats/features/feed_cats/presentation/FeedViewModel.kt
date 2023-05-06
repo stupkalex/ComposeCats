@@ -4,14 +4,14 @@ import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composecats.core.PatchType.*
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.features.favourite.domain.usecases.AddCatToFavouriteUseCase
 import com.example.composecats.features.favourite.domain.usecases.DeleteCatToFavouriteUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.GetCatsUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.LoadMoreUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.ShowAllCatsUseCase
 import com.example.composecats.features.feed_cats.domain.usecases.ShowFavouriteCatsUseCase
-import com.example.composecats.features.save_images.domain.usecases.SaveImageToCacheUseCase
+import com.example.composecats.core.image_cache.domain.usecases.SaveImageToCacheUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

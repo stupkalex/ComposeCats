@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.core.navigation.Screen.Companion.KEY_CAT_ID
 
 fun NavGraphBuilder.homeScreenNavGraph(
@@ -24,7 +24,6 @@ fun NavGraphBuilder.homeScreenNavGraph(
             arguments = listOf(
                 navArgument(KEY_CAT_ID) {
                     type = CatEntity.NavigationType
-
                 }
             )
         ) {

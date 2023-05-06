@@ -1,6 +1,6 @@
 package com.example.composecats.features.favourite.domain.usecases
 
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 import com.example.composecats.features.favourite.domain.FavouriteRepository
 import javax.inject.Inject
 

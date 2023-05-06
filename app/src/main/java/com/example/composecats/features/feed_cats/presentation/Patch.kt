@@ -1,6 +1,6 @@
 package com.example.composecats.core
 
-import com.example.composecats.core.entity.CatEntity
+import com.example.composecats.core.local.entity.CatEntity
 
 data class Patch(
     val type: PatchType,
